@@ -6,41 +6,6 @@
     <title>Unity Web Player | My project</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  
-    <style>
-      html, body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden !important; background:#efeee9; }
-      #unity-container { position:absolute !important; left:0 !important; top:0 !important; right:0 !important; bottom:0 !important; }
-      #unity-canvas { position:absolute !important; left:0 !important; top:0 !important; width:100vw !important; height:100vh !important; display:block !important;
-                      outline:none !important; touch-action:none !important; -ms-touch-action:none !important; }
-      .unity-desktop, .unity-mobile { width:100vw !important; height:100vh !important; }
-    </style>
-
-  
-    <style id="itch-fullbleed-overrides">
-      html, body { margin:0 !important; padding:0 !important; width:100% !important; height:100% !important; overflow:hidden !important; background:#efeee9; }
-      /* Make the container fill the iframe and neutralize Unity template centering */
-      #unity-container { position:absolute !important; left:0 !important; top:0 !important; right:0 !important; bottom:0 !important; width:100vw !important; height:100vh !important; }
-      #unity-container.unity-desktop { left:0 !important; top:0 !important; transform:none !important; width:100vw !important; height:100vh !important; }
-      #unity-container.unity-mobile  { position:fixed !important; inset:0 !important; width:100vw !important; height:100vh !important; }
-      /* Let the canvas fill its parent (not rely on viewport directly) */
-      #unity-canvas { width:100% !important; height:100% !important; display:block !important; outline:none !important; touch-action:none !important; -ms-touch-action:none !important; }
-      /* Avoid TemplateData rules shrinking the desktop window */
-      .unity-desktop, .unity-mobile { width:100% !important; height:100% !important; }
-      /* Optional: hide footer to prevent any layout influence */
-      #unity-footer { display:none !important; }
-    </style>
-
-  
-    <style>
-      html, body { margin:0; height:100%; overflow:hidden; background:#efeee9; }
-      #unity-container { position:absolute; left:0; top:0; right:0; bottom:0; }
-      #unity-container.unity-desktop { left:0; top:0; transform:none; width:100vw; height:100vh; }
-      #unity-container.unity-mobile  { position:fixed; inset:0; }
-      #unity-canvas { width:100%; height:100%; display:block; touch-action:none; -ms-touch-action:none; }
-      #unity-footer { display:none; }
-    </style>
-
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -87,12 +52,12 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/EduPlayRoom.loader.js";
-      var config = { decompressionFallback: true, matchWebGLToCanvasSize: true, devicePixelRatio: (window.devicePixelRatio || 1), matchWebGLToCanvasSize: true, devicePixelRatio: (window.devicePixelRatio || 1),
+      var loaderUrl = buildUrl + "/TemplateData.loader.js";
+      var config = {
         arguments: [],
-        dataUrl: encodeURI(buildUrl + "/EduPlayRoom.data.br"),
-        frameworkUrl: encodeURI(buildUrl + "/EduPlayRoom.framework.js.br"),
-        codeUrl: encodeURI(buildUrl + "/EduPlayRoom.wasm.br"),
+        dataUrl: buildUrl + "/TemplateData.data.unityweb",
+        frameworkUrl: buildUrl + "/TemplateData.framework.js.unityweb",
+        codeUrl: buildUrl + "/TemplateData.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "My project",
@@ -125,8 +90,6 @@
         document.getElementsByTagName('head')[0].appendChild(meta);
         document.querySelector("#unity-container").className = "unity-mobile";
         canvas.className = "unity-mobile";
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
 
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
@@ -135,31 +98,9 @@
 
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
+        canvas.style.width = "1080px";
+        canvas.style.height = "1920px";
       }
-
-      
-      // --- Resize handler (pre-loader) ---
-      (function(){
-        function fitCanvas(){
-          var dpr = Math.max(1, window.devicePixelRatio || 1);
-          canvas.style.width  = "100vw";
-          canvas.style.height = "100%";
-          canvas.width  = Math.floor(window.innerWidth  * dpr);
-          canvas.height = Math.floor(window.innerHeight * dpr);
-        }
-        ['resize','orientationchange','fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
-          .forEach(function(ev){ window.addEventListener(ev, fitCanvas); });
-        fitCanvas();
-        // Prevent browser scrolling during interactions
-        window.addEventListener('touchmove', function(e){
-          if (e.target && (e.target.id === 'unity-canvas' || (e.target.closest && e.target.closest('#unity-canvas')))) e.preventDefault();
-        }, { passive:false });
-        window.addEventListener('wheel', function(e){
-          if (document.activeElement && document.activeElement.id === 'unity-canvas') e.preventDefault();
-        }, { passive:false });
-      })();
 
       document.querySelector("#unity-loading-bar").style.display = "block";
 
